@@ -57,10 +57,33 @@ public class Main {
         // parses identifiers from palindrome.java, and adds to BST
         String[] words = javaProgramContent.split("\\W+");
         for (String word : words) {
-            // checks if first character is a letter and if the word is not in reservedWordsBST
-            if (Character.isLetter(word.charAt(0)) && !reservedWordsBST.contains(word)) {
+            // checks if it is a valid Java identifier or an integer and not in reservedWordsBST
+            if ((isValidJavaIdentifier(word) || isInteger(word)) && !reservedWordsBST.contains(word)) {
                 identifiersBST.add(word);
             }
+        }
+    }
+
+    private static boolean isValidJavaIdentifier(String str) {
+        // checks if the given string is a valid Java identifier
+        if (str.isEmpty() || !Character.isJavaIdentifierStart(str.charAt(0))) {
+            return false;
+        }
+        for (int i = 1; i < str.length(); i++) {
+            if (!Character.isJavaIdentifierPart(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean isInteger(String str) {
+        // checks if the given string is an integer
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
         }
     }
 
